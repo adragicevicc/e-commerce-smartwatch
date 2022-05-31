@@ -1,0 +1,66 @@
+import { createContext } from "react";
+import { products } from "../../data";
+
+const INITIAL_STATE = {
+  user: JSON.parse(localStorage.getItem("user")) || null,
+  quantity: 0,
+  total: 0,
+  error: null
+};
+
+export const CartContext = createContext(INITIAL_STATE);
+
+const CartReducer = (state, action) => {
+  switch (action.type) {
+    case "EMPTY_CART":
+      return {
+        user: action.payload,
+        quantity: 0,
+        total: 0,
+        error: null
+      };
+    case "ADD_PRODUCT":
+      return {
+        user: action.payload,
+        quantity: quantity+1,
+        total: total+product,
+        error: null
+      };
+    case "REMOVE_PRODUCT":
+      return {
+        user: action.payload,
+        quantity: 0,
+        total: 0,
+        error: null
+      };
+    case "LOGOUT":
+      return {
+        user: null,
+        loading: false,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const AuthContextProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
+
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(state.user));
+  }, [state.user]);
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user: state.user,
+        loading: state.loading,
+        error: state.error,
+        dispatch,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
