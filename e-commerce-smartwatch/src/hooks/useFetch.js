@@ -6,7 +6,7 @@ const useFetch = (passedUrl) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const [url, setUrl] = useState(passedUrl); // da bi mi se reload svaki put kad se pozove ovaj useFetch zbog usera
+  const [url, setUrl] = useState(passedUrl);
 
   const {user} = useContext(AuthContext)
   let headers = {};
@@ -16,8 +16,6 @@ const useFetch = (passedUrl) => {
       'Authorization': `Bearer ${user.accessToken}`,
     }
   }
-
-  // console.log("USER: ", user);
 
   useEffect(() => {
     const fetchData = async () => {

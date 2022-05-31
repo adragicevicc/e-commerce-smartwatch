@@ -27,7 +27,7 @@ const [values, setValues] = useState({
       placeholder:"Email",
       errorMessage:"It should be a valid email address!",
       label:"Email",
-      required: true, 
+      required: true,
     },
     {
       id:2,
@@ -119,7 +119,7 @@ const [values, setValues] = useState({
             }
             console.log('unknown error')
             throw Error('Unknown fetch error occurred!')
-          } 
+          }
           return res.json()
         })
         .then(data => {
@@ -150,21 +150,21 @@ const [values, setValues] = useState({
           <div className="formElements">
             <div className="row">
               {inputs.map((input) => (
-                <FormInput 
+                <FormInput
                   key={input.id}
                   {...input}
                   value={values[input.name]}
-                  onChange={onChange} 
+                  onChange={onChange}
                 />
               ))}
             </div>
             <div className="row">
               {inputsSecondRow.map((input) => (
-                <FormInput 
+                <FormInput
                   key={input.id}
                   {...input}
                   value={values[input.name]}
-                  onChange={onChange} 
+                  onChange={onChange}
                 />
               ))}
             </div>

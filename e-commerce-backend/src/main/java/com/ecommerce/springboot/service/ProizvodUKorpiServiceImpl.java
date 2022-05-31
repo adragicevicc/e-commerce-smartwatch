@@ -35,7 +35,7 @@ public class ProizvodUKorpiServiceImpl implements ProizvodUKorpiService{
 				prUKorpi.setKolicina(prUKorpi.getKolicina() + proizvodUKorpi.getKolicina());
 				prUKorpi.getProizvod().setDostupna_kolicina(prUKorpi.getProizvod().getDostupna_kolicina() - proizvodUKorpi.getKolicina());
 				prUKorpi.setCena_za_kolicinu(prUKorpi.getKolicina()*prUKorpi.getProizvod().getCena());
-				k.setUkupan_iznos_korpe(k.getUkupan_iznos_korpe() + prUKorpi.getCena_za_kolicinu());
+				k.setUkupan_iznos_korpe(k.getUkupan_iznos_korpe() + proizvodUKorpi.getCena_za_kolicinu());
 				
 				return proizvodUKorpiRepository.save(prUKorpi);
 

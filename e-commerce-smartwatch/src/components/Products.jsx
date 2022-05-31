@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { products } from '../data'
 import Product from './Product'
 import styled from 'styled-components';
-import axios from 'axios';
 import ProductDataService from '../services/ProductService';
 
 const Container = styled.div`
@@ -14,27 +13,12 @@ justify-content: space-between;
 
 const Products = ({sort}) => {
 
-  const [products, setProducts] = useState([]); 
-  //const [filteredProducts, setFilteredProducts] = useState([]);
-
-  /*useEffect(() => {
-    const getProducts = async()=>{
-      try {
-        const res = await axios.get('http://localhost:8080/api/auth/proizvodi');
-        console.log(res);
-        setProducts(res.data);
-      } catch (error) {}
-    };
-    getProducts();
-  }, []);*/
-  
-  
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     retrieveProducts();
   }, []);
 
-  
 
   const retrieveProducts = () => {
     ProductDataService.getAll()

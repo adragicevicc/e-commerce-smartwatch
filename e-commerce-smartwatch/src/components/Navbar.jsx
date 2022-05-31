@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlined from '@mui/icons-material/ShoppingCartOutlined';
-import { Badge } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
-import BuyerDataService from "../services/BuyerService";
+import { Badge, Menu } from '@mui/material';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
+import CartService from '../services/CartService';
 
 const Container = styled.div`
     height: 60px;
@@ -58,30 +59,40 @@ const MenuItem = styled.div`
 
 const Navbar = () => {
 
-    const [user, setUser] = useState({});
-    const id = 2;
+    const {user, dispatch } = useContext(AuthContext);
+    const navigate = useNavigate();
+    console.log(user);
+
+    const [korpa, setKorpa] = useState({});
+    const [quantity, setQuantity] = useState(0);
 
     useEffect(() => {
-        getUser();
-      }, []);
-    
-      
-    
-      const getUser = () => {
-        BuyerDataService.get(id)
-          .then(response => {
-            setUser(response.data);
+        if(!user===null) {
+
+        retriveQuantity();
+        } else {
+            setQuantity(0);
+        }
+  }, [korpa]);
+
+    const retriveQuantity = () => {
+        CartService.get(user.id_korpa).then(response => {
+            setKorpa(response.data);
             console.log(response.data);
+
+            setQuantity(korpa.broj_stavki);
+            console.log(quantity);
           })
           .catch(e => {
             console.log(e);
           });
       };
 
-      useEffect(() => {
-        if (id)
-            getUser(id);
-      }, [id]);
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        dispatch({ type: "LOGOUT" });
+        navigate('/login');
+    }
 
     return (
     <Container>
@@ -96,11 +107,12 @@ const Navbar = () => {
                 ><Logo>SmartWatch</Logo>
             </Center>
             <Right>
-            {user ? null : <MenuItem>Registruj se</MenuItem>}
-            {user ? null : <MenuItem>Prijavi se</MenuItem>}
+            {user ? null : <Link to={`/register`}><MenuItem> Registruj se</MenuItem></Link>}
+            {user ? null : <Link to={`/login`}><MenuItem> Prijavi se</MenuItem></Link>}
+            {user ? <MenuItem onClick={handleLogout}>Odjavi se</MenuItem> : null}
             <Link to={`/cart`}>
             {user ? <MenuItem>
-                        <Badge badgeContent={1} color="primary">
+                        <Badge badgeContent={quantity} color="primary">
                             <ShoppingCartOutlined/>
                         </Badge>
                     </MenuItem>

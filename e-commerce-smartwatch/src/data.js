@@ -1,25 +1,27 @@
-import img1 from './img/watches/img4.webp';
+import img1 from './img/watches/watch3.png';
+import img2 from './img/watches/gt3.png';
+import img3 from './img/watches/miWatchLite.png';
 
 export const sliderItems=[
     {
         id:1,
         img: img1,
         title: "APPLE",
-        desc: "30% OFF",
+        desc: "Klikom na dugme ispod pregledaj ponudu satova",
         bg:"f5fafd",
     },
     {
         id:2,
-        img: img1,
+        img: img2,
         title: "HUAWEI",
-        desc: "10% OFF",
+        desc: "Klikom na dugme ispod pregledaj ponudu satova",
         bg:"fcf1ed"
     },
     {
         id:3,
-        img: img1,
+        img: img3,
         title: "XIAOMI",
-        desc: "40% OFF",
+        desc: "Klikom na dugme ispod pregledaj ponudu satova",
         bg:"fbf0f4"
     }
 ]
@@ -41,7 +43,7 @@ export const products = [
     },
     {
         id: 3,
-        name: "SmartWatch3",
+        name: "Watch 3",
         price: 300,
         img:img1
     }

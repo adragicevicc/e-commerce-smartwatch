@@ -1,7 +1,8 @@
 import { SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from "styled-components";
+import { AuthContext } from './context/AuthContext';
 
 const Info = styled.div`
   opacity: 0;
@@ -80,14 +81,14 @@ const Price=styled.span`
 
 const Product = ({item}) => {
 
+  const {user} = useContext(AuthContext);
+
   return (
     <Container>
       <Image src={item.url}/>
         <Info>
             <Icon>
-              <Link to={`/product/${item.id_proizvod}`}>
-                <SearchOutlined/>
-              </Link>
+              {user ? <Link to={`/product/${item.id_proizvod}`}><SearchOutlined/></Link> : <Link to={`/login`}><SearchOutlined/></Link>}
             </Icon>
         </Info>
         <Details>

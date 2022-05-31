@@ -1,21 +1,30 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import { userRequest } from "../requestMethods";
 
 const Order = () => {
   const location = useLocation();const data = location.state.stripeData;
   const cart = location.state.cart;
   const [orderId, setOrderId] = useState(null);
 
+  const {user} = useContext(AuthContext)
+  let headers = {};
+  if (user){
+    headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${user.accessToken}`,
+    }
+  }
+
   useEffect(() => {
     const createOrder = async () => {
       try {
-        const res = await userRequest.post("/porudzbine", {          
+        const res = await axios.post("http://localhost:8080/api/auth/porudzbine", {
           status:"poruceno",
           uplata:true,
           ukupan_iznos: cart.total,
           id_korpa: cart._id
-        });
+        }, {headers:headers});
         setOrderId(res.data._id);
       } catch {}
     };

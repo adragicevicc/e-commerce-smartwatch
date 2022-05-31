@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import image from '../img/watches/img1.png'
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -8,9 +7,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { publicRequest } from '../requestMethods';
 import ProductDataService from "../services/ProductService";
-import CartService from '../services/CartService';
 import { AuthContext } from '../components/context/AuthContext';
 
 const Container = styled.div`
@@ -68,10 +65,10 @@ const Amount = styled.span`
     height:30px;
     border-radius:10px;
     border:1px solid teal;
-    display:flex;    
+    display:flex;
     align-items:center;
     justify-content:center;
-    margin:0px 5px; 
+    margin:0px 5px;
 `;
 const Button = styled.button`
 padding:15px;
@@ -92,22 +89,18 @@ const Product = () => {
     const id = location.pathname.split("/")[2];
     const [product, setProduct] = useState({});
     const [quantity, setQuantity] = useState(1);
-    //const dispatch = useDispatch();
-    // const { id }= useParams();
-
-    /*useEffect(()=> {
-        const getProduct = async()=>{
-            try{
-                const res = await publicRequest.get("/proizvodi/" + id);
-                setProduct(res.data);
-            } catch {}
-        };
-        getProduct();
-    }, [id]);*/
     const [cartId, setCartId] = useState({});
     const [cart, setCart] = useState({});
 
     const {user} = useContext(AuthContext);
+
+    let headers = {};
+    if (user){
+     headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.accessToken}`,
+        }
+    }
 
     useEffect(() => {
         getProduct();
@@ -140,9 +133,6 @@ const Product = () => {
     };
 
     const handleClick = () => {
-        /*dispatch(
-            addProduct({ ...product, quantity})
-          );*/
           addToCart();
         
     };
@@ -153,33 +143,13 @@ const Product = () => {
         "id_kupac":user.id
     };
     const addToCart = () => {
-        /*const getCart = () => {
-            BuyerDataService.get(id)
-          .then(response => {
-            setCart(response.data);
-            console.log(response.data);
-          })
-          .catch(e => {
-            console.log(e);
-          });
-        };*/
-        // setCartId(user.id_korpa);
-        // CartService.update(cartId, newdata)
-        // .then(response => {
-        //     setCart(response.data);
-
-        //     console.log(response.data);
-        //   })
-        //   .catch(e => {
-        //     console.log(e);
-        //   });
 
         const putData = {
             proizvodId: id,
             kolicina: quantity
         }
 
-        axios.put(`http://localhost:8080/api/auth/korpe/${user.id_korpa}`, putData)
+        axios.put(`http://localhost:8080/api/auth/korpe/${user.id_korpa}`, putData,  {headers:headers})
         console.log(putData)
         };
 

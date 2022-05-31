@@ -1,11 +1,10 @@
-import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { AuthContext } from '../components/context/AuthContext';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import StripeCheckoutButton from '../components/stripe-button/stripe.button.component';
-import img1 from "../img/watches/img1.png";
 import useFetch from "../hooks/useFetch";
 
 const Container = styled.div`
@@ -125,6 +124,7 @@ const Cart = () => {
 
     useEffect(() => {
         setCart(data);
+        console.log(cart);
         if (cart) {
           setLoading(false);
         }
@@ -140,7 +140,7 @@ const Cart = () => {
         <Wrapper>
             <Tittle>Tvoja Korpa</Tittle>
             <Top>
-                <TopButton>Nastavi kupovinu</TopButton>
+                <Link to="/products"><TopButton>Nastavi kupovinu</TopButton></Link>
                 {!loading && <StripeCheckoutButton price={cart.ukupan_iznos_korpe}/> }
             </Top>
             { !loading && <Bottom>

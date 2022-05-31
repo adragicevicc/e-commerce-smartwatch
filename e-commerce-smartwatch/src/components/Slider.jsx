@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import { sliderItems } from '../data';
 
+
 const Container = styled.div`
   width:100%;
   height:100vh;
@@ -84,6 +85,7 @@ const Button= styled.button`
 const Slider = () => {
 
   const [slideIndex, setSlideIndex] = useState(0);
+
   const handleClick = (direction) => {
       if(direction ==="lefr") {
         setSlideIndex(slideIndex > 0 ? slideIndex-1 : 2);

@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/context/AuthContext';
 import axios from "axios";
+
+
 
 const Container = styled.div`
     width:100vw;
     height: 100vh;
-    background: linear-gradient(#eaeaea7e, #4f4b4b7b);
+    background: linear-gradient(#eaeaea7e, #4f4b4b7b), url("https://res.cloudinary.com/ecommercesmartwatch/image/upload/v1654018106/wallpaper4_k1klzf.jpg");
+    background-size: 100%;
     display:flex;
     align-items:center;
     justify-content: center;
@@ -43,7 +46,7 @@ const Button = styled.button`
     cursor: pointer;
 `;
 
-const Link =  styled.a`
+const Span =  styled.span`
     margin:5px 0px;
     font-size: 13px;
     text-decoration: underline;
@@ -63,24 +66,21 @@ const Login = () => {
 
   const { loading, error, dispatch } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    console.log(credentials);
   };
 
   const handleClick = async (e) => {
     e.preventDefault();
-   
+
     dispatch({ type: "LOGIN_START" });
-    
+
     try {
-      console.log(credentials.email);
-      console.log(credentials.password);
       const res = await axios.post("http://localhost:8080/api/auth/signin", {email:credentials.email, lozinka:credentials.password});
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-      navigate("/")
+      navigate("/");
     } catch (error) {
       dispatch({ type: "LOGIN_FAILURE", payload: error });
     }
@@ -96,7 +96,7 @@ const Login = () => {
                 <Input name="password" placeholder="Lozinka" type="password" onChange={handleChange}/>
                 <Button disabled={loading} onClick={handleClick}>Prijavi se</Button>
                 {error && <span className="wrong">Email ili lozinka neispravni</span>}
-                <Link>Nemaš nalog? Registruj se</Link>
+                <Link to="/register"><Span>Nemaš nalog? Registruj se</Span></Link>
             </Form>
         </Wrapper>
     </Container>
