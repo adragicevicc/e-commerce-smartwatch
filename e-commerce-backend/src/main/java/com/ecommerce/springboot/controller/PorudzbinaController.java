@@ -37,7 +37,11 @@ public class PorudzbinaController {
 	//@PreAuthorize("hasRole('ZAPOSLENI') or hasRole('ADMIN')")
 	@GetMapping("/api/auth/porudzbine")
 	public List<Porudzbina> getAllPorudzbine() {
-		return porudzbinaRepository.findAll();
+		List<Porudzbina> p = porudzbinaRepository.findAll();
+		for(Porudzbina por : p) {
+			System.out.println(por.getProizvodi().toString());
+		}
+		return p;
 	}
 	
 	//@PreAuthorize("hasRole('KUPAC') or hasRole('ZAPOSLENI') or hasRole('ADMIN')")

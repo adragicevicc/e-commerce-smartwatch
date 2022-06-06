@@ -2,8 +2,7 @@ import "./register.css"
 import FormInput from '../../components/form-input/FormInput'
 import { useState } from "react"
 import { useNotification } from "../../components/notification/NotificationProvider";
-import { Link } from "react-router-dom";
-const Register = () => {
+const RegisterAdmin = () => {
 
   const dispatch = useNotification();
 
@@ -14,12 +13,9 @@ const [values, setValues] = useState({
     ime:"",
     prezime:"",
     lozinka:"",
-    grad:"",
-    nazivUlice:"",
-    broj:"",
-    broj_telefona:"",
-    tip:"kupac",
-    uloga:"ROLE_KUPAC"
+    pozicija:"admin",
+    tip:"admin",
+    uloga:"ROLE_ADMIN"
 
   })
 
@@ -68,43 +64,14 @@ const [values, setValues] = useState({
   const inputsSecondRow = [
     {
       id:5,
-      name:"grad",
+      name:"pozicija",
       type:"text",
-      placeholder:"Grad",
+      placeholder:"Pozicija",
       errorMessage:"Invalid input!",
-      label:"Grad",
+      label:"Pozicija",
       required: true,
       pattern: `^.{1,}$`
-    },
-    {
-      id:6,
-      name:"nazivUlice",
-      type:"text",
-      placeholder:"Ulica",
-      errorMessage:"Invalid input!",
-      label:"Ulica",
-      required: true,
-      pattern: `^.{1,}$`
-    },
-    {
-      id:7,
-      name:"broj",
-      type:"text",
-      placeholder:"Broj",
-      errorMessage:"Invalid input!",
-      label:"Broj",
-      required: true
-    },
-    {
-        id:8,
-        name:"broj_telefona",
-        type:"text",
-        placeholder:"Broj telefona",
-        errorMessage:"Invalid input!",
-        label:"Broj",
-        required: true,
-        pattern: "^[0-9]{9,13}$"
-      }
+    }
   ]
 
 
@@ -176,10 +143,9 @@ const [values, setValues] = useState({
           <button>Registruj se</button>
         </form>
       </div>
-      <Link to={"/adminRegistration"}><div>Registruj se kao admin</div></Link>
     </div>
 
   )
 }
 
-export default Register
+export default RegisterAdmin

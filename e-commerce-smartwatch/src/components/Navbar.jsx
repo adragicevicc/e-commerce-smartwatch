@@ -56,17 +56,22 @@ const MenuItem = styled.div`
     margin-left:25px
     `;
 
+const AdminDash = styled.h3`
+
+`;
+
 const Navbar = () => {
 
     const {user, dispatch } = useContext(AuthContext);
     const navigate = useNavigate();
-    console.log(user);
 
     const handleLogout = async (e) => {
         e.preventDefault();
         dispatch({ type: "LOGOUT" });
         navigate('/login');
     }
+
+    let uloga = user.uloge[0];
 
     return (
     <Container>
@@ -85,7 +90,11 @@ const Navbar = () => {
             {user ? null : <Link to={`/login`}><MenuItem> Prijavi se</MenuItem></Link>}
             {user ? <MenuItem onClick={handleLogout}>Odjavi se</MenuItem> : null}
             <Link to={`/cart`} style={{ color: 'black' }}>
-            {user ? <MenuItem>
+            {uloga === 'ROLE_ADMIN' ? 
+                <Link to='/dashboard'>
+                    <MenuItem>Dashboard</MenuItem>
+                </Link> : null}
+            {user && uloga != 'ROLE_ADMIN' ? <MenuItem>
                         <Badge color="primary">
                             <ShoppingCartOutlined/>
                         </Badge>

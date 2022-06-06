@@ -65,7 +65,6 @@ public class ZaposleniController {
 	public ResponseEntity<Zaposleni> updateZaposleni(@PathVariable("id") int id, @RequestBody Zaposleni newZaposleni) {		
 		Zaposleni zaposleni = zaposleniRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Ne postoji kupac sa id: " + id));
-		zaposleni.setDatum_zaposlenja(newZaposleni.getDatum_zaposlenja());
 		zaposleni.setPozicija(newZaposleni.getPozicija());
 		
 		Zaposleni updatedZaposleni = zaposleniRepository.save(zaposleni);

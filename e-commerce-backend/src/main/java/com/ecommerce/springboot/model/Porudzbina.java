@@ -2,14 +2,19 @@ package com.ecommerce.springboot.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -31,16 +36,22 @@ public class Porudzbina {
 	private int ukupan_iznos;
 	private LocalDate datum_porudzbine;
 	
-	@Transient
-	private ArrayList<String> proizvodi = new ArrayList<String>();
+	/*@Transient
+	private ArrayList<String> proizvodi = new ArrayList<String>();*/
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.DETACH)
 	@JoinColumn(name="id_korisnik")
 	private Kupac kupac;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_korpa", referencedColumnName="id_korpa")
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name="id_korpa", referencedColumnName="id_korpa")	
 	private Korpa korpa;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "porudzbina_proizvod", 
+				joinColumns = @JoinColumn(name = "id_porudzbina"), 
+				inverseJoinColumns = @JoinColumn(name = "id_proizvod"))
+	private Set<Proizvod> proizvodi= new HashSet<>();
 	
 	public Porudzbina() {
 		
@@ -55,22 +66,24 @@ public class Porudzbina {
 		this.kupac=kupac;
 	}
 	
-	public Porudzbina(int id_porudzbina, int ukupan_iznos, LocalDate datum_porudzbine, ArrayList<String> proizvodi, Kupac kupac, Korpa korpa) {
+	
+	public Porudzbina(int id_porudzbina, int ukupan_iznos, LocalDate datum_porudzbine, Kupac kupac,
+			Set<Proizvod> proizvodi, Korpa korpa) {
 		super();
 		this.id_porudzbina = id_porudzbina;
 		this.ukupan_iznos = ukupan_iznos;
 		this.datum_porudzbine = datum_porudzbine;
+		this.kupac = kupac;
+		this.proizvodi = proizvodi;
 		this.korpa = korpa;
-		this.kupac=kupac;
-		this.proizvodi=proizvodi;
-	}
-	
-	public ArrayList<String> getProizvodi() {
-		return proizvodi;
 	}
 
-	public void setProizvodi(ArrayList<String> proizvodi) {
+	public void setProizvodi(Set<Proizvod> proizvodi) {
 		this.proizvodi = proizvodi;
+	}
+	
+	public Set<Proizvod> getProizvodi() {
+		return proizvodi;
 	}
 
 	public Kupac getKupac() {

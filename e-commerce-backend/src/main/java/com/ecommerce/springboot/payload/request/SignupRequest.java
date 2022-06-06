@@ -41,7 +41,6 @@ public class SignupRequest {
 	    private int broj_telefona;
 	    
 	    //zaposleni
-	    private LocalDate datum_zaposlenja;
 	    
 	    private String pozicija;
 	    
@@ -54,7 +53,7 @@ public class SignupRequest {
 		}
 		
 		//uloga
-		private Set<String> uloga;
+		private String uloga;
 	    
 		
 		
@@ -106,11 +105,11 @@ public class SignupRequest {
 	        this.lozinka = lozinka;
 	    }
 
-		public Set<String> getUloga() {
+		public String getUloga() {
 			return uloga;
 		}
 
-		public void setUloga(Set<String> uloga) {
+		public void setUloga(String uloga) {
 			this.uloga = uloga;
 		}
 
@@ -136,14 +135,6 @@ public class SignupRequest {
 
 		public void setBroj_telefona(int broj_telefona) {
 			this.broj_telefona = broj_telefona;
-		}
-
-		public LocalDate getDatum_zaposlenja() {
-			return datum_zaposlenja;
-		}
-
-		public void setDatum_zaposlenja(LocalDate datum_zaposlenja) {
-			this.datum_zaposlenja = datum_zaposlenja;
 		}
 
 		public String getPozicija() {

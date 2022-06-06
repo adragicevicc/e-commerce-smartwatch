@@ -99,100 +99,6 @@ public class AuthController {
 				 roles, -1));
 	}
 	
-	/*@PostMapping("/signup/zaposleni")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupZaposleniRequest signUpRequest) {
-		if (korisnikRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
-		}
-	
-		
-		Korisnik korisnik = new Korisnik(signUpRequest.getIme(), signUpRequest.getPrezime()
-				 ,signUpRequest.getTip(), signUpRequest.getEmail(),
-							 encoder.encode(signUpRequest.getLozinka()));
-		Set<String> strRoles = signUpRequest.getUloga();
-		System.out.println(signUpRequest.getUloga());
-		Set<Uloga> uloge = new HashSet<>();
-		/*if (strRoles == null) {
-			Uloga zapUloga = ulogaRepository.findByName(EUloga.ROLE_ZAPOSLENI)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			uloge.add(zapUloga);
-			
-			Zaposleni zaposleni = new Zaposleni(korisnik, signUpRequest.getDatum_zaposlenja(), signUpRequest.getPozicija());
-			zaposleniRepository.save(zaposleni);			
-		} else {			
-			strRoles.forEach(uloga -> {
-				switch (uloga) {
-				case "ROLE_ZAPOSLENI":
-					Uloga zaposleniUloga = ulogaRepository.findByName(EUloga.ROLE_ZAPOSLENI)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					System.out.println(zaposleniUloga.getName());/////
-					uloge.add(zaposleniUloga);
-					Zaposleni zaposleni = new Zaposleni(korisnik, signUpRequest.getDatum_zaposlenja(), signUpRequest.getPozicija());
-					zaposleniRepository.save(zaposleni);
-					break;
-				case "ROLE_ADMIN":
-					Uloga adminUloga = ulogaRepository.findByName(EUloga.ROLE_ADMIN)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					uloge.add(adminUloga);
-					
-					Zaposleni admin = new Zaposleni(korisnik, signUpRequest.getDatum_zaposlenja(), signUpRequest.getPozicija());
-					zaposleniRepository.save(admin);
-					break;
-				default:
-					Uloga zapUloga = ulogaRepository.findByName(EUloga.ROLE_ZAPOSLENI)
-						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					uloge.add(zapUloga);
-					
-					Zaposleni defzaposleni = new Zaposleni(korisnik, signUpRequest.getDatum_zaposlenja(), signUpRequest.getPozicija());
-					zaposleniRepository.save(defzaposleni);
-				}
-			});
-		//}
-		korisnik.setUloge(uloge);
-		//korisnikRepository.save(korisnik);
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-	}
-	
-	
-	@PostMapping("/signup/kupac")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupKupacRequest signUpRequest) {
-		if (korisnikRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
-		}
-	
-		
-		Korisnik korisnik = new Korisnik(signUpRequest.getIme(), signUpRequest.getPrezime()
-				 ,signUpRequest.getTip(), signUpRequest.getEmail(),
-							 encoder.encode(signUpRequest.getLozinka()));
-		Set<String> strRoles = signUpRequest.getUloga();
-		Set<Uloga> uloge = new HashSet<>();
-		if (strRoles == null) {
-			Uloga kupacUloga = ulogaRepository.findByName(EUloga.ROLE_KUPAC)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			uloge.add(kupacUloga);
-			
-			Adresa adresa=new Adresa(signUpRequest.getAdresa().getGrad(), signUpRequest.getAdresa().getNazivUlice(), signUpRequest.getAdresa().getBroj());
-			
-			Kupac kupac = new Kupac(korisnik, adresa, signUpRequest.getBroj_telefona());
-			kupacRepository.save(kupac);
-		} else {
-			Uloga kupacUloga = ulogaRepository.findByName(EUloga.ROLE_KUPAC)
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			uloge.add(kupacUloga);
-					
-			Kupac newKupac = new Kupac(korisnik, signUpRequest.getAdresa(), signUpRequest.getBroj_telefona());
-			kupacRepository.save(newKupac);
-				
-		}
-		korisnik.setUloge(uloge);
-		
-		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-	}*/
-	
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (korisnikRepository.existsByEmail(signUpRequest.getEmail())) {
@@ -204,10 +110,10 @@ public class AuthController {
 		Korisnik korisnik = new Korisnik(signUpRequest.getIme(), signUpRequest.getPrezime()
 				 ,signUpRequest.getTip(), signUpRequest.getEmail(),
 							 encoder.encode(signUpRequest.getLozinka()));
-		Set<String> strRoles = signUpRequest.getUloga();
+		String strRoles = signUpRequest.getUloga();
 		Set<Uloga> uloge = new HashSet<>();
-		if (strRoles == null) {
-			Uloga kupac = ulogaRepository.findByName(EUloga.ROLE_KUPAC)
+		/*if (strRoles == null) {
+			/*Uloga kupac = ulogaRepository.findByName(EUloga.ROLE_KUPAC)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 			uloge.add(kupac);
 			
@@ -218,24 +124,23 @@ public class AuthController {
 			Kupac newkupac = new Kupac(korisnik, uloge, newadresa, signUpRequest.getBroj_telefona(), newkorpa);
 			kupacRepository.save(newkupac);
 			
-		} else {
-			strRoles.forEach(uloga -> {
-				switch (uloga) {
-				case "ROLE_ZAPOSLENI":
-					Uloga zaposleniUloga = ulogaRepository.findByName(EUloga.ROLE_ZAPOSLENI)
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					uloge.add(zaposleniUloga);
-					
-					Zaposleni zaposleni = new Zaposleni(korisnik, uloge, signUpRequest.getDatum_zaposlenja(), signUpRequest.getPozicija());
-					System.out.println(uloge.size());
-					zaposleniRepository.save(zaposleni);
-					break;
+			Uloga adminnnUloga = ulogaRepository.findByName(EUloga.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+			uloge.add(adminnnUloga);
+			
+			Zaposleni adminnn = new Zaposleni(korisnik, uloge,signUpRequest.getPozicija());
+			//korisnik.setUloge(uloge);
+			zaposleniRepository.save(adminnn);*/
+	
+			
+		//} else {
+			
+				switch (strRoles) {
 				case "ROLE_ADMIN":
 					Uloga adminUloga = ulogaRepository.findByName(EUloga.ROLE_ADMIN)
 							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 					uloge.add(adminUloga);
 					
-					Zaposleni admin = new Zaposleni(korisnik, uloge, signUpRequest.getDatum_zaposlenja(), signUpRequest.getPozicija());
+					Zaposleni admin = new Zaposleni(korisnik, uloge, signUpRequest.getPozicija());
 					//korisnik.setUloge(uloge);
 					zaposleniRepository.save(admin);
 					break;
@@ -253,8 +158,8 @@ public class AuthController {
 					kupacRepository.save(kupac);
 				}
 				
-			});
-		}
+			
+		//}
 		//korisnik.setUloge(uloge);
 		//korisnikRepository.save(korisnik);
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
