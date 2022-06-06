@@ -57,6 +57,14 @@ public class Korpa {
 		this.proizvodi_u_korpi = new ArrayList<>();
 		
 	}
+	
+	public Korpa(int id_korpa, int ukupan_iznos_korpe, int broj_stavki, List<ProizvodUKorpi> proizvodi_u_korpi) {
+		super();
+		this.id_korpa = id_korpa;
+		this.ukupan_iznos_korpe = ukupan_iznos_korpe;
+		this.broj_stavki = broj_stavki;
+		this.proizvodi_u_korpi = proizvodi_u_korpi;
+	}
 
 	public Korpa(int id_korpa, int ukupan_iznos_korpe, int broj_stavki, List<ProizvodUKorpi> proizvodi_u_korpi,
 			Porudzbina porudzbina, List<Porudzbina> porudzbine) {

@@ -1,6 +1,8 @@
 package com.ecommerce.springboot.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,7 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -26,13 +30,13 @@ public class Porudzbina {
 	private int id_porudzbina;
 	private int ukupan_iznos;
 	private LocalDate datum_porudzbine;
-	private LocalDate datum_isporuke;
-	private String status;
-	private boolean uplata;
 	
-	/*@ManyToOne
-	@JoinColumn(name="id_kupac")
-	private Kupac kupac;*/
+	@Transient
+	private ArrayList<String> proizvodi = new ArrayList<String>();
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="id_korisnik")
+	private Kupac kupac;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_korpa", referencedColumnName="id_korpa")
@@ -42,16 +46,39 @@ public class Porudzbina {
 		
 	}
 
-	public Porudzbina(int id_porudzbina, int ukupan_iznos, LocalDate datum_porudzbine, LocalDate datum_isporuke,
-			String status, boolean uplata, Kupac kupac, Korpa korpa) {
+	public Porudzbina(int id_porudzbina, int ukupan_iznos, LocalDate datum_porudzbine, Kupac kupac, Korpa korpa) {
 		super();
 		this.id_porudzbina = id_porudzbina;
 		this.ukupan_iznos = ukupan_iznos;
 		this.datum_porudzbine = datum_porudzbine;
-		this.datum_isporuke = datum_isporuke;
-		this.status = status;
-		this.uplata = uplata;
 		this.korpa = korpa;
+		this.kupac=kupac;
+	}
+	
+	public Porudzbina(int id_porudzbina, int ukupan_iznos, LocalDate datum_porudzbine, ArrayList<String> proizvodi, Kupac kupac, Korpa korpa) {
+		super();
+		this.id_porudzbina = id_porudzbina;
+		this.ukupan_iznos = ukupan_iznos;
+		this.datum_porudzbine = datum_porudzbine;
+		this.korpa = korpa;
+		this.kupac=kupac;
+		this.proizvodi=proizvodi;
+	}
+	
+	public ArrayList<String> getProizvodi() {
+		return proizvodi;
+	}
+
+	public void setProizvodi(ArrayList<String> proizvodi) {
+		this.proizvodi = proizvodi;
+	}
+
+	public Kupac getKupac() {
+		return kupac;
+	}
+
+	public void setKupac(Kupac kupac) {
+		this.kupac = kupac;
 	}
 
 	public int getId_porudzbina() {
@@ -76,30 +103,6 @@ public class Porudzbina {
 
 	public void setDatum_porudzbine(LocalDate datum_porudzbine) {
 		this.datum_porudzbine = datum_porudzbine;
-	}
-
-	public LocalDate getDatum_isporuke() {
-		return datum_isporuke;
-	}
-
-	public void setDatum_isporuke(LocalDate datum_isporuke) {
-		this.datum_isporuke = datum_isporuke;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public boolean isUplata() {
-		return uplata;
-	}
-
-	public void setUplata(boolean uplata) {
-		this.uplata = uplata;
 	}
 
 

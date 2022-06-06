@@ -5,7 +5,6 @@ import ShoppingCartOutlined from '@mui/icons-material/ShoppingCartOutlined';
 import { Badge, Menu } from '@mui/material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
-import CartService from '../services/CartService';
 
 const Container = styled.div`
     height: 60px;
@@ -63,31 +62,6 @@ const Navbar = () => {
     const navigate = useNavigate();
     console.log(user);
 
-    const [korpa, setKorpa] = useState({});
-    const [quantity, setQuantity] = useState(0);
-
-    useEffect(() => {
-        if(!user===null) {
-
-        retriveQuantity();
-        } else {
-            setQuantity(0);
-        }
-  }, [korpa]);
-
-    const retriveQuantity = () => {
-        CartService.get(user.id_korpa).then(response => {
-            setKorpa(response.data);
-            console.log(response.data);
-
-            setQuantity(korpa.broj_stavki);
-            console.log(quantity);
-          })
-          .catch(e => {
-            console.log(e);
-          });
-      };
-
     const handleLogout = async (e) => {
         e.preventDefault();
         dispatch({ type: "LOGOUT" });
@@ -103,16 +77,16 @@ const Navbar = () => {
                     <SearchIcon style={{color:"gary", fontSize:16}}/>
                 </SearchContainer>
             </Left>
-            <Center
-                ><Logo>SmartWatch</Logo>
+            <Center>
+                <Link to={`/`} style={{ textDecoration: 'none', color: 'black' }}><Logo>SmartWatch</Logo></Link>
             </Center>
             <Right>
             {user ? null : <Link to={`/register`}><MenuItem> Registruj se</MenuItem></Link>}
             {user ? null : <Link to={`/login`}><MenuItem> Prijavi se</MenuItem></Link>}
             {user ? <MenuItem onClick={handleLogout}>Odjavi se</MenuItem> : null}
-            <Link to={`/cart`}>
+            <Link to={`/cart`} style={{ color: 'black' }}>
             {user ? <MenuItem>
-                        <Badge badgeContent={quantity} color="primary">
+                        <Badge color="primary">
                             <ShoppingCartOutlined/>
                         </Badge>
                     </MenuItem>

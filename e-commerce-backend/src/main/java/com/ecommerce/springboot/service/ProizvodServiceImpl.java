@@ -1,6 +1,11 @@
 package com.ecommerce.springboot.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ecommerce.springboot.model.Proizvod;
@@ -41,6 +46,16 @@ public class ProizvodServiceImpl implements ProizvodService{
 		proizvodjac.getProizvod().add(proizvod);
 		
 		return this.proizvodRepository.save(proizvod);
+	}
+
+	@Override
+	public Page<Proizvod> findPaginated(int pageNo, int pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		System.out.println("PageNumber: " + paging.getPageNumber() + " PageSize: " + paging.getPageSize());
+        Page<Proizvod> pagedResult = proizvodRepository.findAll(paging);
+        System.out.println(pagedResult.toString());
+        
+        return pagedResult;
 	}
 	
 }

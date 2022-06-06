@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.ecommerce.springboot.model.Korpa;
 import com.ecommerce.springboot.model.Kupac;
 import com.ecommerce.springboot.model.Porudzbina;
+import com.ecommerce.springboot.model.ProizvodUKorpi;
+import com.ecommerce.springboot.payload.request.PorudzbinaDto;
 import com.ecommerce.springboot.repository.KorpaRepository;
 import com.ecommerce.springboot.repository.KupacRepository;
 import com.ecommerce.springboot.repository.PorudzbinaRepository;
@@ -27,17 +29,28 @@ public class PorudzbinaServiceImpl implements PorudzbinaService{
 	KupacRepository kupacRepository;
 
 	@Override
-	public Porudzbina addPPorudzbina(Porudzbina porudzbina) {
-		Korpa k = korpaRepository.getById(porudzbina.getKorpa().getId_korpa());
+	public Porudzbina addPPorudzbina(PorudzbinaDto porudzbina) {
+		Korpa k = korpaRepository.getById(porudzbina.getId_korpa());
 		
-		porudzbina.setKorpa(k);
-		porudzbina.setUkupan_iznos(k.getUkupan_iznos_korpe());
+		Kupac kup = kupacRepository.getById(porudzbina.getId_kupac());
+		
+	
+		
+		Porudzbina p = new Porudzbina();
+		p.setKorpa(k);
+		p.setUkupan_iznos(k.getUkupan_iznos_korpe());
+		p.setKupac(kup);
+		
+		for(ProizvodUKorpi prUKorpi : k.getProizvodi_u_korpi()) {
+			p.getProizvodi().add(prUKorpi.getProizvod().getNazivProizvoda());
+		}
+					
 		
 		LocalDate localDate = LocalDate.now();
     
-		porudzbina.setDatum_porudzbine(localDate);
+		p.setDatum_porudzbine(localDate);
 		
-		return porudzbinaRepository.save(porudzbina);
+		return porudzbinaRepository.save(p);
 		
 	}
 	

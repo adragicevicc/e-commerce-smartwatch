@@ -1,35 +1,54 @@
 import React, { useEffect, useState } from 'react'
-import { products } from '../data'
 import Product from './Product'
 import styled from 'styled-components';
-import ProductDataService from '../services/ProductService';
+import axios from 'axios';
+import { Pagination } from '@mui/material';
 
 const Container = styled.div`
 padding: 20px;
 display: flex;
 flex-wrap: wrap;
 justify-content: space-between;
+flex-direction: column;
+
+`;
+
+const ProductsContainer = styled.div`
+flex:1;
+display: flex;
+flex-direction: row;
+`;
+
+const Paginator = styled.div`
+  flex:1;
+  padding: 10px;
+  align-items: center;
+  margin-left: 40%;
 `;
 
 const Products = ({sort}) => {
 
   const [products, setProducts] = useState([]);
+  const [pageNo, setPageNo] = useState(0);
 
-  useEffect(() => {
+  
+  useEffect(()=> {
     retrieveProducts();
-  }, []);
+  }, [pageNo])
 
-
-  const retrieveProducts = () => {
-    ProductDataService.getAll()
-      .then(response => {
-        setProducts(response.data);
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  const retrieveProducts = async () => {
+    try{
+        const response = await axios.get(`http://localhost:8080/api/auth/proizvodi/${pageNo}/3`);
+        setProducts(response.data.content);
+        console.log(response.data.content);
+      } catch{};
   };
+
+  const handleChange = (event, value) => {
+    setPageNo(value-1);
+    console.log("USAOOO U HANDLE CHANGE");
+  };
+
 
   useEffect(() => {
     if (sort === "asc") {
@@ -47,9 +66,13 @@ const Products = ({sort}) => {
 
   return (
     <Container>
+      <ProductsContainer>
         {products.map((item) => (
-        <Product item={item} key={item.id} />
-      ))}
+        <Product item={item} key={item.id} />))}
+      </ProductsContainer>
+
+      <Paginator><Pagination count={2} variant="outlined" onChange={handleChange}/></Paginator>
+
     </Container>
   )
 }

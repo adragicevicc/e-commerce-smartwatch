@@ -20,8 +20,6 @@ const Order = () => {
     const createOrder = async () => {
       try {
         const res = await axios.post("http://localhost:8080/api/auth/porudzbine", {
-          status:"poruceno",
-          uplata:true,
           ukupan_iznos: cart.total,
           id_korpa: cart._id
         }, {headers:headers});

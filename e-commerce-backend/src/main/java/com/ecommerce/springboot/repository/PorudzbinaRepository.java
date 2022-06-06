@@ -12,7 +12,7 @@ public interface PorudzbinaRepository extends JpaRepository<Porudzbina, Integer>
 
 	//List<Porudzbina> findByStatusIgnoreCase(String status);
 
-	Collection<Porudzbina> findPorudzbinaByStatusIgnoreCase(String status);
+	//Collection<Porudzbina> findPorudzbinaByStatusIgnoreCase(String status);
 	
 
 }

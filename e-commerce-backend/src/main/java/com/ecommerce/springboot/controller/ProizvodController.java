@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,6 +36,11 @@ public class ProizvodController {
 	ProizvodService proizvodService;
 	
 	//@PreAuthorize("hasRole('ZAPOSLENI') or hasRole('KUPAC') or hasRole('ADMIN')")
+	@GetMapping("/api/auth/proizvodi/{pageNo}/{pageSize}")
+	public Page<Proizvod> getAllProizvodi(@PathVariable int pageNo, @PathVariable int pageSize) {
+		return proizvodService.findPaginated(pageNo, pageSize);
+	}
+	
 	@GetMapping("/api/auth/proizvodi")
 	public List<Proizvod> getAllProizvodi() {
 		return proizvodRepository.findAll();

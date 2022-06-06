@@ -137,11 +137,6 @@ const Product = () => {
         
     };
 
-    const newdata = {
-        "ukupan_iznos_korpe":50000,
-        "broj_stavki":2,
-        "id_kupac":user.id
-    };
     const addToCart = () => {
 
         const putData = {

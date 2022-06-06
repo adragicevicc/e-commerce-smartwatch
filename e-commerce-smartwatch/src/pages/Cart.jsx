@@ -134,6 +134,7 @@ const Cart = () => {
         products = cart.proizvodiUKorpi
     console.log(products);
 
+
   return (
     <Container>
         <Navbar/>
@@ -141,7 +142,7 @@ const Cart = () => {
             <Tittle>Tvoja Korpa</Tittle>
             <Top>
                 <Link to="/products"><TopButton>Nastavi kupovinu</TopButton></Link>
-                {!loading && <StripeCheckoutButton price={cart.ukupan_iznos_korpe}/> }
+                {!loading && <StripeCheckoutButton price={cart.ukupan_iznos_korpe} id_korpa={cart.id_korpa}/> }
             </Top>
             { !loading && <Bottom>
                 <Products>

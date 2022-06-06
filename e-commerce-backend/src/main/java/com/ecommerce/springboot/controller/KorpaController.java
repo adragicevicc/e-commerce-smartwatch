@@ -24,6 +24,7 @@ import com.ecommerce.springboot.model.ProizvodUKorpi;
 import com.ecommerce.springboot.payload.request.DodajUKorpuDTO;
 import com.ecommerce.springboot.repository.KorpaRepository;
 import com.ecommerce.springboot.repository.ProizvodRepository;
+import com.ecommerce.springboot.repository.ProizvodUKorpiRepository;
 import com.ecommerce.springboot.service.KorpaService;
 import com.ecommerce.springboot.service.ProizvodUKorpiService;
 
@@ -36,6 +37,9 @@ public class KorpaController {
 	
 	@Autowired
 	private ProizvodRepository proizvodRepository;
+	
+	@Autowired
+	private ProizvodUKorpiRepository proizvodUKorpiRepository;
 	
 	@Autowired
 	KorpaService korpaService;
@@ -74,20 +78,29 @@ public class KorpaController {
 		return new ResponseEntity<Korpa>(HttpStatus.CONFLICT);
 	}
 	
-//	//@PreAuthorize("hasRole('KUPAC')")
-//	@PutMapping("/api/auth/korpe/{id}")
-//	public ResponseEntity<Korpa> updateKorpa(@PathVariable("id") int id, @RequestBody Korpa newKorpa) {		
-//		Korpa korpa = korpaRepository.findById(id)
-//				.orElseThrow(() -> new ResourceNotFoundException("Ne postoji korpa sa id: " + id));
-//		korpa.setBroj_stavki(newKorpa.getBroj_stavki());
-//		korpa.setUkupan_iznos_korpe(newKorpa.getUkupan_iznos_korpe());
-//		korpa.setProizvodi_u_korpi(newKorpa.getProizvodi_u_korpi());
-//		korpa.setPorudzbina(newKorpa.getPorudzbina());
-//		
-//		Korpa updatedKorpa = korpaRepository.save(korpa);
-//		
-//		return ResponseEntity.ok(updatedKorpa);
-//	}
+	@PutMapping("/api/auth/korpeRefresh/{id}")
+	public ResponseEntity<Korpa> refreshKorpa(@PathVariable("id") int id) {
+		Korpa korpa = korpaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ne postoji korpa sa id: "+ id));
+		korpa.setBroj_stavki(0);
+		korpa.setUkupan_iznos_korpe(0);
+		
+		List<ProizvodUKorpi> prUK = korpa.getProizvodi_u_korpi();
+		korpa.setProizvodi_u_korpi(null);
+		
+		for (ProizvodUKorpi prUKorpi : prUK) {
+			System.out.println("PRE BRISANJA: " + prUKorpi.getId_proizvod_u_korpi());
+			prUKorpi.setKorpa(null);
+			prUKorpi.setProizvod(null);
+			proizvodUKorpiRepository.delete(prUKorpi);
+			System.out.println("POSLE BRISANJA: " + prUKorpi.getId_proizvod_u_korpi());		
+		}		
+		
+		korpa.setProizvodi_u_korpi(null);
+		
+		korpaRepository.save(korpa);
+		
+		return new ResponseEntity<Korpa>(HttpStatus.OK);
+	}
 	
 	//@PreAuthorize("hasRole('KUPAC')")
 	@PutMapping("/api/auth/korpe/{id}")

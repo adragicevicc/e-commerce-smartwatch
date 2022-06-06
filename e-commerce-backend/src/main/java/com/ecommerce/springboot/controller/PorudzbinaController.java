@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecommerce.springboot.exception.ResourceNotFoundException;
 import com.ecommerce.springboot.model.Porudzbina;
+import com.ecommerce.springboot.payload.request.PorudzbinaDto;
 import com.ecommerce.springboot.repository.PorudzbinaRepository;
 import com.ecommerce.springboot.service.PorudzbinaService;
 
@@ -47,20 +48,17 @@ public class PorudzbinaController {
 		return ResponseEntity.ok(porudzbina);
 	}
 	
-	//@PreAuthorize("hasRole('ZAPOSLENI') or hasRole('ADMIN')")
-	@GetMapping("/api/auth/porudzbinaStatus")
-	public Collection<Porudzbina> getPorudzbinaByStatus(@RequestParam(required=true) String status) {
-		return porudzbinaRepository.findPorudzbinaByStatusIgnoreCase(status);
-	}
+
 	
 	//@PreAuthorize("hasRole('KUPAC')")
-	@PostMapping("/api/authapi/auth/porudzbine")
-	public ResponseEntity<Porudzbina> createPorudzbina(@RequestBody Porudzbina porudzbina) {
-		if(!porudzbinaRepository.existsById(porudzbina.getId_porudzbina())) {
+	@PostMapping("/api/auth/porudzbine")
+	public ResponseEntity<Porudzbina> createPorudzbina(@RequestBody PorudzbinaDto porudzbina) {
+		
 			Porudzbina p = porudzbinaService.addPPorudzbina(porudzbina);
+
+			System.out.println(p.getProizvodi());
 			return new ResponseEntity<Porudzbina>(HttpStatus.OK);
-		}
-		return new ResponseEntity<Porudzbina>(HttpStatus.CONFLICT);
+		
 	}
 	
 	//@PreAuthorize("hasRole('KUPAC')")
@@ -70,9 +68,6 @@ public class PorudzbinaController {
 				.orElseThrow(() -> new ResourceNotFoundException("Ne postoji porudzbina sa id: " + id));
 		porudzbina.setUkupan_iznos(newPorudzbina.getUkupan_iznos());
 		porudzbina.setDatum_porudzbine(newPorudzbina.getDatum_porudzbine());
-		porudzbina.setDatum_isporuke(newPorudzbina.getDatum_isporuke());
-		porudzbina.setStatus(newPorudzbina.getStatus());
-		porudzbina.setUplata(newPorudzbina.isUplata());
 		porudzbina.setKorpa(newPorudzbina.getKorpa());
 		
 		Porudzbina updatedPorudzbina = porudzbinaRepository.save(porudzbina);
