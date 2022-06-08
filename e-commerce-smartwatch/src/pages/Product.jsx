@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import ProductDataService from "../services/ProductService";
 import { AuthContext } from '../components/context/AuthContext';
@@ -83,6 +83,28 @@ font-size: medium;
   }
 `;
 
+
+const AdminButtons = styled.div`
+    padding:10px;
+    display:flex;
+    justify-content: space-between;
+`;
+
+const AdminButton = styled.button`
+padding: 5px;
+flex: 1;
+border:1px solid teal;
+background-color:white;
+cursor:pointer;
+align-items: center;
+font-weight: 500;
+font-size: medium;
+  &:hover{
+      background-color: #f8f4f4;
+  }
+margin: 20px 0px;
+`;
+
 const Product = () => {
 
     const location = useLocation();
@@ -94,6 +116,9 @@ const Product = () => {
 
     const {user} = useContext(AuthContext);
 
+    const navigate = useNavigate();
+
+    let uloga = user.uloge[0];
     let headers = {};
     if (user){
      headers = {
@@ -137,6 +162,19 @@ const Product = () => {
         
     };
 
+    const handleEdit = () => {
+        navigate(`/product/edit/${product.id_proizvod}`);
+    }
+
+    const handleDelete = () => {
+        try{
+            console.log(product);
+            console.log(product.id_proizvod);
+            axios.delete(`http://localhost:8080/api/auth/proizvodi/${product.id_proizvod}`);
+            navigate("/products");
+        } catch {};
+    };
+
     const addToCart = () => {
 
         const putData = {
@@ -158,16 +196,22 @@ const Product = () => {
             <InfoContainer>
                 <Title>{product.nazivProizvoda}</Title>
                 <Desc>{product.karakteristike}</Desc>
-                <Price>{product.cena}$</Price>   
+                <Price>{product.cena}$</Price>
                 <AddContainer>
-                    <AmountContainer>
+                    {uloga === 'ROLE_ADMIN' ? 
+                    <AdminButtons>
+                        <AdminButton onClick={handleEdit}>Izmeni proizvod</AdminButton>
+                        <AdminButton onClick={handleDelete}>Izbrisi proizvod</AdminButton>
+                    </AdminButtons> :
+                    <AmountContainer> 
                         <RemoveIcon onClick={()=>handleQuantity("minus")}/>
                         <Amount>{quantity}</Amount>
                         <AddIcon onClick={()=>handleQuantity("plus")}/>
-                    </AmountContainer>
+                    </AmountContainer>}
+                    {uloga === 'ROLE_ADMIN' ? null :
                     <Button onClick={handleClick}>Dodaj
                         <AddShoppingCartIcon fontSize='small'/>
-                    </Button>
+                    </Button>}
                 </AddContainer>
             </InfoContainer>
         </Wrapper>

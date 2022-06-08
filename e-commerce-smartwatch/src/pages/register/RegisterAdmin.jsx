@@ -2,9 +2,12 @@ import "./register.css"
 import FormInput from '../../components/form-input/FormInput'
 import { useState } from "react"
 import { useNotification } from "../../components/notification/NotificationProvider";
+import { useNavigate } from "react-router-dom";
+
 const RegisterAdmin = () => {
 
   const dispatch = useNotification();
+  const navigate = useNavigate();
 
 
 

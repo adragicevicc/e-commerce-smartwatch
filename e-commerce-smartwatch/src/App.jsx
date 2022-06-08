@@ -15,6 +15,7 @@ import NotificationProvider from "./components/notification/NotificationProvider
 import { useContext } from "react";
 import { AuthContext } from "./components/context/AuthContext";
 import Dashboard from "./pages/Dashboard";
+import NewProduct from "./pages/new-product/NewProduct";
 
 const App = () => {
 
@@ -29,7 +30,9 @@ const App = () => {
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />}/>
         <Route path="/register" element={user ? <Navigate to="/" /> : <NotificationProvider><Register/></NotificationProvider>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
-        <Route path="/adminRegistration" element={<RegisterAdmin/>}/>
+        <Route path="/adminRegistration" element={<NotificationProvider><RegisterAdmin/></NotificationProvider>}/>
+        <Route path="/newProduct" element={<NotificationProvider><NewProduct edit={false} title={'Dodaj novi proizvod'}/></NotificationProvider>}/>
+        <Route path="/product/edit/:id" element={<NotificationProvider> <NewProduct edit={true} title={'Izmeni Proizvod'}/> </NotificationProvider>} />
       </Routes>
     </Router>
   )

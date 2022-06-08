@@ -56,9 +56,13 @@ const MenuItem = styled.div`
     margin-left:25px
     `;
 
-const AdminDash = styled.h3`
+const AdminDash = styled.div`
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+    flex-direction: row;
+    `;
 
-`;
 
 const Navbar = () => {
 
@@ -71,16 +75,13 @@ const Navbar = () => {
         navigate('/login');
     }
 
-    let uloga = user.uloge[0];
+    let uloga;
+    {user ? uloga = user.uloge[0] : uloga=null}
 
     return (
     <Container>
         <Wrapper>
             <Left>
-                <SearchContainer>
-                    <Input/>
-                    <SearchIcon style={{color:"gary", fontSize:16}}/>
-                </SearchContainer>
             </Left>
             <Center>
                 <Link to={`/`} style={{ textDecoration: 'none', color: 'black' }}><Logo>SmartWatch</Logo></Link>
@@ -89,18 +90,28 @@ const Navbar = () => {
             {user ? null : <Link to={`/register`}><MenuItem> Registruj se</MenuItem></Link>}
             {user ? null : <Link to={`/login`}><MenuItem> Prijavi se</MenuItem></Link>}
             {user ? <MenuItem onClick={handleLogout}>Odjavi se</MenuItem> : null}
-            <Link to={`/cart`} style={{ color: 'black' }}>
-            {uloga === 'ROLE_ADMIN' ? 
-                <Link to='/dashboard'>
+            {uloga === 'ROLE_ADMIN' ?
+            <AdminDash>
+                <Link to='/dashboard' style={{ textDecoration: 'none', color: 'black' }}>
                     <MenuItem>Dashboard</MenuItem>
-                </Link> : null}
-            {user && uloga != 'ROLE_ADMIN' ? <MenuItem>
-                        <Badge color="primary">
-                            <ShoppingCartOutlined/>
-                        </Badge>
-                    </MenuItem>
+                </Link>
+                <Link to='/products' style={{ textDecoration: 'none', color: 'black' }}>
+                    <MenuItem>Proizvodi</MenuItem>
+                </Link>
+                <Link to='/newProduct' style={{ textDecoration: 'none', color: 'black' }}>
+                    <MenuItem>Dodaj proizvod</MenuItem>
+                </Link>
+            </AdminDash>
                  : null}
+            {user && uloga != 'ROLE_ADMIN' ?
+            <Link to={`/cart`} style={{ color: 'black' }}>
+                <MenuItem>
+                    <Badge color="primary">
+                        <ShoppingCartOutlined/>
+                    </Badge>
+                </MenuItem>
             </Link>
+                 : null}
             </Right>
         </Wrapper>
     </Container>

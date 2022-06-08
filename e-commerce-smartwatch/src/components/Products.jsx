@@ -71,7 +71,7 @@ const Products = ({sort}) => {
         <Product item={item} key={item.id} />))}
       </ProductsContainer>
 
-      <Paginator><Pagination count={2} variant="outlined" onChange={handleChange}/></Paginator>
+      <Paginator><Pagination count={3} variant="outlined" onChange={handleChange}/></Paginator>
 
     </Container>
   )

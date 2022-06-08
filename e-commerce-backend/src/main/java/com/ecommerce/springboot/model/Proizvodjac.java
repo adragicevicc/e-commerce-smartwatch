@@ -1,5 +1,7 @@
 package com.ecommerce.springboot.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,7 +32,7 @@ public class Proizvodjac {
 	@Column(name="naziv_proizvodjaca")
 	private String nazivProizvodjaca;
 	
-	@OneToMany(mappedBy="proizvodjac", cascade = {CascadeType.DETACH, CascadeType.REMOVE})
+	@OneToMany(mappedBy="proizvodjac", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Proizvod> proizvod;
 	

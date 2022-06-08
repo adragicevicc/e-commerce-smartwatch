@@ -46,7 +46,7 @@ public class ProizvodjacController {
 	
 	//@PreAuthorize("hasRole('ZAPOSLENI') or hasRole('KUPAC') or hasRole('ADMIN')")
 	@GetMapping("/api/auth/proizvodjacNaziv")
-	public Collection<Proizvodjac> getGradByNazivProizvodjaca(@RequestParam(required=true) String nazivProizvodjaca) {
+	public Proizvodjac getProizvodjacByNazivProizvodjaca(@RequestParam(required=true) String nazivProizvodjaca) {
 		return proizvodjacRepository.findProizvodjacByNazivProizvodjacaIgnoreCase(nazivProizvodjaca);
 	}
 	

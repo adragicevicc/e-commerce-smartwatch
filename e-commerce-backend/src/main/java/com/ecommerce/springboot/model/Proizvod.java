@@ -1,5 +1,6 @@
 package com.ecommerce.springboot.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class Proizvod {
 	private int cena;
 	private int dostupna_kolicina;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_proizvodjac")
 	private Proizvodjac proizvodjac;
 	

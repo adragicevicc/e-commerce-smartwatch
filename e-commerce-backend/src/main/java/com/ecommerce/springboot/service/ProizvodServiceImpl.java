@@ -41,9 +41,22 @@ public class ProizvodServiceImpl implements ProizvodService{
 		proizvod.setDostupna_kolicina(proizvodReq.getDostupna_kolicina());
 		proizvod.setUrl(proizvodReq.getUrl());
 		
-		Proizvodjac proizvodjac = new Proizvodjac();
-		proizvodjac.setNazivProizvodjaca(proizvodReq.getNazivProizvodjaca());
-		proizvodjac.getProizvod().add(proizvod);
+		System.out.println("naziv proizvoda: "+ proizvodReq.getNazivProizvoda());
+		System.out.println("naziv proizvoda: "+ proizvodReq.getCena());
+		System.out.println("naziv proizvoda: "+ proizvodReq.getKarakteristike());
+		System.out.println("naziv proizvoda: "+ proizvodReq.getDostupna_kolicina());
+		
+		Proizvodjac proizvodjac = proizvodjacRepository.findProizvodjacByNazivProizvodjacaIgnoreCase(proizvodReq.getNazivProizvodjaca());
+		System.out.println("NAZIVVV: " + proizvodReq.getNazivProizvodjaca());
+		if(proizvodjac == null) {
+			proizvodjac = new Proizvodjac();
+			proizvodjac.setNazivProizvodjaca(proizvodReq.getNazivProizvodjaca());
+			System.out.println("NE POSTOJI PA SE PRAVI");
+		}
+		
+		proizvod.setProizvodjac(proizvodjac);
+		System.out.println("POSTOJI ILI JE NAPRAVLJEN");
+		//proizvodjac.getProizvod().add(proizvod);
 		
 		return this.proizvodRepository.save(proizvod);
 	}

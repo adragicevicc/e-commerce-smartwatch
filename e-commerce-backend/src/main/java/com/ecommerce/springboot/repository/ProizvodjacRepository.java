@@ -11,7 +11,7 @@ public interface ProizvodjacRepository extends JpaRepository<Proizvodjac, Intege
 
 	//Collection<Proizvodjac> findByNazivProizvodjacaIgnoreCase(String nazivProizvodjaca);
 
-	Collection<Proizvodjac> findProizvodjacByNazivProizvodjacaIgnoreCase(String nazivProizvodjaca);
+	Proizvodjac findProizvodjacByNazivProizvodjacaIgnoreCase(String nazivProizvodjaca);
 	
 
 }

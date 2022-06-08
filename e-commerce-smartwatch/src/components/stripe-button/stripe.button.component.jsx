@@ -13,7 +13,6 @@ const StripeCheckoutButton = ({ price, id_korpa }) => {
     const stripePrice = price * 100;
     const publishableKey = 'pk_test_51L32PoFYveM0ufMdHF3HxSWmVn9bwmsYAnLHyjdoTu6NTnB46vZwn5Yh4JzP4cdZFzn5CssswKWR9Cu3vVMXpeTL00kbCCQOxB';
 
-    
   const [orderId, setOrderId] = useState(null);
   const [cart, setCartId] = useState();
   const [products, setProducts] = useState([]);
@@ -49,7 +48,7 @@ const StripeCheckoutButton = ({ price, id_korpa }) => {
 
 
     const onToken = token => {
-        axios.post('http://localhost:8080/api/auth/payment', 
+        axios.post('http://localhost:8080/api/auth/payment',
         {amount: stripePrice, token})
         .then((response) => {alert('Uplata uspesno izvrsena!')})
         .then(() => {createOrder()})
@@ -70,7 +69,6 @@ const StripeCheckoutButton = ({ price, id_korpa }) => {
                 <button style={{border:"none", width:120, borderRadius:5, padding:"20px", backgroundColor:"black", fontWeight:"600", cursor:"pointer", color:"white"}}>Završi i plati</button>
             </StripeCheckout>
         </Container>
-        
     )
 }
 
